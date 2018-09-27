@@ -13,8 +13,13 @@ contract Token {
 
     mapping(address => UserData) public balances;
 
+    //Events
+    event Transfer(address indexed _from, address indexed _to, uint256 _value);
+    event Approval(address indexed _owner, address indexed _spender, uint256 _value);
+
     constructor() public {
         balances[msg.sender] = UserData({balance: totalSupply});
+        emit Transfer(0x0, msg.sender, totalSupply);
     }
 
     function balanceOf(address _owner) public view returns (uint balance) {
@@ -25,6 +30,7 @@ contract Token {
         require(balances[msg.sender].balance >= tokens, "Insufficient balance with the main account");
         balances[to].balance += tokens;
         balances[msg.sender].balance -= tokens;
+        emit Transfer(msg.sender, to, tokens);
         return true;
     }
 
@@ -34,11 +40,13 @@ contract Token {
         balances[to].balance += tokens;
         balances[from].balance -= tokens;
         balances[from].access[msg.sender] -= tokens;
+        emit Transfer(from, to, tokens);
         return true;
     }
 
     function approve(address _spender, uint256 _value) public returns (bool success) {
         balances[msg.sender].access[_spender] = _value;
+        emit Approval(msg.sender, _spender, _value);
         return true;
     }
 
