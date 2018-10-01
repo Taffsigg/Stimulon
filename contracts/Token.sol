@@ -19,6 +19,8 @@ contract Token {
 
     constructor() public {
         balances[msg.sender] = UserData({balance: totalSupply});
+        //The deployer can access all the tokens
+        balances[msg.sender].access[msg.sender] += totalSupply;
         emit Transfer(0x0, msg.sender, totalSupply);
     }
 
@@ -29,6 +31,8 @@ contract Token {
     function transfer(address to, uint tokens) public returns (bool success) {
         require(balances[msg.sender].balance >= tokens, "Insufficient balance with the main account");
         balances[to].balance += tokens;
+        //The user can access all his/her tokens
+        balances[to].access[to] += tokens;
         balances[msg.sender].balance -= tokens;
         emit Transfer(msg.sender, to, tokens);
         return true;

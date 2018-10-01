@@ -27,6 +27,7 @@ contract TokenTest {
     }
 
     function testTransferFrom() public {
+        //Has to fail
         token.transferFrom(msg.sender, 0x54478ED1AC5b0ea8E174D4d8b10f7223FCE21308, 20);
         uint balance = token.balanceOf(0x54478ED1AC5b0ea8E174D4d8b10f7223FCE21308);
         Assert.equal(balance, 20, "Transfer STM tokens");
