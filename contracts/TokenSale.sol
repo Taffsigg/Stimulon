@@ -1,36 +1,37 @@
 pragma solidity ^0.4.23;
 
-contract Token {
-    function transfer(address to, uint tokens) public returns (bool success);
-}
+import "./Token.sol";
 
 contract TokenSale {
     Token token;
     mapping(address => uint) public balanceOf;
-    address public sendToIfSuccessful;
-    bool public saleClosed;
-    bool public saleSuccessful;
-    uint public amountRaised;
+    address public admin;
     uint public deadline;
     uint public goal;
     uint public valueOfToken;
+    uint totalAmount;
 
     event GoalReached(address to, uint amountRaised);
-    event Transferred(address to, uint value);
+    event Transferred(address to, uint value, bool isContrib);
 
-    constructor(address tokenAddress, address beneficiary, uint deadlineInMins, uint fundingGoal, uint etherValueOfToken) public {
+    constructor(address tokenAddress, uint etherValueOfToken) public {
         token = Token(tokenAddress);
-        sendToIfSuccessful = beneficiary;
-        deadline = deadlineInMins;
-        goal = fundingGoal;
-        valueOfToken = etherValueOfToken;
+        admin = msg.sender;
+        valueOfToken = etherValueOfToken * 1 ether;
     }
 
-    function () payable public{
+    function () public payable{
         uint amount = msg.value;
-        amountRaised += amount;
+        totalAmount += amount;
         balanceOf[msg.sender] += amount;
-        token.transfer(msg.sender, amount / valueOfToken);
-        emit Transferred(msg.sender, amount / valueOfToken);
+        uint stm = amount / valueOfToken;
+        token.transfer(msg.sender, stm);
+        emit Transferred(msg.sender, stm, true);
     }
+
+    function withdraw() public {
+        require(msg.sender == admin, "Cannot withdraw. Not the owner");
+        msg.sender.transfer(totalAmount);
+    }
+
 }
