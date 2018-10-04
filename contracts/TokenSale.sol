@@ -32,6 +32,7 @@ contract TokenSale {
     function withdraw() public {
         require(msg.sender == admin, "Cannot withdraw. Not the owner");
         msg.sender.transfer(totalAmount);
+        totalAmount = 0;
     }
 
 }
