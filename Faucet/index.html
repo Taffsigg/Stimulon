@@ -1,0 +1,25 @@
+<html>
+    <head>
+        <title>Stimulon ICO</title>
+        <link rel="stylesheet" href="https://unpkg.com/purecss@1.0.0/build/pure-min.css" integrity="sha384-nn4HPE8lTHyVtfCBi5yW9d20FjT8BJwUXyWZT9InLYax14RDjBj46LmSztkmNP9w" crossorigin="anonymous">
+        <script src="./web3/dist/web3.min.js"></script>
+        
+    </head>
+
+    <body>
+        <form class="pure-form">
+            <fieldset>
+                <legend>Stimulon Faucet</legend>
+        
+                <input type="number" placeholder="Ether" id="amount" required/>
+                <button type="button" class="pure-button pure-button-primary"  onclick="getSTM()">Get STM</button>
+                <button type="button" class="pure-button" id="bal" onclick="getBalance()">Show Balance</button>
+            </fieldset>
+        </form>
+        <h3 id="notice"></h3>
+        <h3 id="myBalance">STM Balance: </h3>
+
+        <script src="js/contract.js"></script>
+    </body>
+    
+</html>
