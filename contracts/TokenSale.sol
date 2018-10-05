@@ -21,6 +21,7 @@ contract TokenSale {
     }
 
     function () public payable{
+        require(msg.value > 0, "Value transferred must be greater than zero");
         uint amount = msg.value;
         totalAmount += amount;
         balanceOf[msg.sender] += amount;
