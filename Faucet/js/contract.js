@@ -8,9 +8,8 @@ var account;
 window.web3.eth.getAccounts((error, accounts) => {
     account = accounts[0];
 });
-
-var tokenSaleAddress = '0xe586599a28e5ced734f7c3974fedf4573513786f';
-var tokenAddress = '0x3ea382f9555553e6e37de29b605b7bf3a5c784cc';
+var tokenSaleAddress = '0x306f88d770bd22ed370e6a6d9f807d2dbdbf6184';
+var tokenAddress = '0x35fc96236e097b78650b2953b428e1f444e0e76b';
 var tokenSaleABI = [
 	{
 		"constant": true,
@@ -411,6 +410,7 @@ var token = new web3.eth.Contract(tokenABI, tokenAddress);
 //     }
 // });
 
+
 function getBalance() {
     //Gets the Ether balance. Will later be changed to STM balance.
     if(account != null) {
@@ -434,6 +434,19 @@ function getSTM() {
           console.log(transactionHash); 
       });
 }
+
+function sendSTM() {
+    //Call the tokenSale contract to get STM
+	var address = document.getElementById("address").value;
+	var stm = document.getElementById("stm").value;
+    console.log(stm);
+    // web3.eth.sendTransaction({from: account, to: tokenSaleAddress, value: web3.utils.toWei(amount, 'ether')}, function(err, transactionHash) {
+    //     if (!err)
+    //       console.log(transactionHash); 
+	//   });
+	token.methods.transfer(address, stm).send({from: account});
+}
+
 
 function notice(message) {
     document.getElementById("notice").innerText = message;
